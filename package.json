@@ -1,20 +1,28 @@
 {
-  "name": "sobat-minda",
-  "version": "0.1.0",
-  "private": true,
+  "name": "ai-mentalheath",
+  "version": "1.0.0",
+  "description": "This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).",
+  "main": "index.js",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "dev": "concurrently --raw \"npm:dev:server\" \"npm:dev:frontend\" \"npm:dev:mobile\"",
+    "dev:server": "npm run dev --prefix server",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "dev:mobile": "npm run start --prefix mobile",
+    "install:all": "npm install && npm install --prefix server && npm install --prefix frontend && npm install --prefix mobile"
   },
-  "dependencies": {
-    "next": "16.1.4",
-    "react": "19.2.3",
-    "react-dom": "19.2.3"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MOH-ED7/AI-MentalHeath.git"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/MOH-ED7/AI-MentalHeath/issues"
+  },
+  "homepage": "https://github.com/MOH-ED7/AI-MentalHeath#readme",
   "devDependencies": {
-    "eslint": "^9",
-    "eslint-config-next": "16.1.4"
+    "concurrently": "^9.2.1"
   }
 }
