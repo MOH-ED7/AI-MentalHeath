@@ -25,33 +25,28 @@ const { MongoMemoryServer } = require('mongodb-memory-server');
 const connectDB = async () => {
     try {
         const uri = process.env.MONGODB_URI;
-        console.log(`Attempting to connect to Cloud MongoDB...`);
-        // Set a timeout for cloud connection to avoid long waits
+        // detailed logs suppressed for cleaner output
         await mongoose.connect(uri, { serverSelectionTimeoutMS: 5000 });
-        console.log('Connected to Cloud MongoDB');
+        console.log('   - Database Status: ✅ Connected to Cloud MongoDB');
     } catch (err) {
-        console.warn('Cloud MongoDB connection failed:', err.message);
-
         // Fallback to local
         try {
-            console.log('Attempting fallback to Local MongoDB...');
             await mongoose.connect('mongodb://localhost:27017/ai-mental-health', { serverSelectionTimeoutMS: 2000 });
-            console.log('Connected to Local MongoDB');
+            console.log('   - Database Status: ✅ Connected to Local MongoDB');
             return;
         } catch (localErr) {
-            console.warn('Local MongoDB fallback failed.');
+            // Internal silent failure
         }
 
         // Final Fallback: In-Memory MongoDB
         try {
-            console.log('Starting In-Memory MongoDB (Temporary)...');
             const mongod = await MongoMemoryServer.create();
             const uri = mongod.getUri();
             await mongoose.connect(uri);
-            console.log('Connected to In-Memory MongoDB. (Data will be lost on restart)');
+            console.log('   - Database Status: ✅ Connected to In-Memory MongoDB (Temporary)');
             return;
         } catch (memErr) {
-            console.error('All database connection attempts failed.', memErr);
+            console.error('   - Database Status: ❌ Transformation Failed (All attempts failed)');
         }
     }
 };
@@ -60,5 +55,6 @@ connectDB();
 
 // Start Server
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`\n🚀 Server is RUNNING at: http://localhost:${PORT}`);
+    console.log(`   - AI Chat Endpoint: http://localhost:${PORT}/api/ai/chat`);
 });
